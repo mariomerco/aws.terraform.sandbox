@@ -21,6 +21,8 @@ resource "aws_launch_template" "app" {
 
   user_data = filebase64("scripts/init.sh")
 
+  vpc_security_group_ids = [aws_security_group.instance_allow_http.id]
+
   tag_specifications {
     resource_type = "instance"
 
@@ -31,6 +33,7 @@ resource "aws_launch_template" "app" {
 }
 
 resource "aws_autoscaling_group" "app" {
+  name             = "${var.project_name}-asg"
   desired_capacity = 1
   max_size         = 1
   min_size         = 1

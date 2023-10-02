@@ -16,6 +16,12 @@ resource "aws_subnet" "public_subnet_2" {
   map_public_ip_on_launch = true
   availability_zone       = data.aws_availability_zones.available.names[1]
 }
+resource "aws_subnet" "public_subnet_3" {
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = var.public_subnet_cidr_3
+  map_public_ip_on_launch = true
+  availability_zone       = data.aws_availability_zones.available.names[2]
+}
 resource "aws_subnet" "private_subnet_1" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnet_cidr_1
@@ -41,7 +47,6 @@ resource "aws_internet_gateway" "gw" {
 resource "aws_route_table" "route_to_internet_gateway" {
   vpc_id = aws_vpc.main.id
 
-
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.gw.id
@@ -51,9 +56,43 @@ resource "aws_route_table" "route_to_internet_gateway" {
     Name = "${var.project_name}-public-route-table"
   }
 }
-resource "aws_route_table_association" "public_to_internet" {
+
+resource "aws_route_table" "route_to_nat_gateway" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.gw.id
+  }
+
+  tags = {
+    Name = "${var.project_name}-private-route-table"
+  }
+}
+resource "aws_route_table_association" "public_to_internet_subnet_1" {
   subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.route_to_internet_gateway.id
+}
+resource "aws_route_table_association" "public_to_internet_subnet_2" {
+  subnet_id      = aws_subnet.public_subnet_2.id
+  route_table_id = aws_route_table.route_to_internet_gateway.id
+}
+resource "aws_route_table_association" "public_to_internet_subnet_3" {
+  subnet_id      = aws_subnet.public_subnet_3.id
+  route_table_id = aws_route_table.route_to_internet_gateway.id
+}
+
+resource "aws_route_table_association" "private_to_nat_subnet_1" {
+  subnet_id      = aws_subnet.private_subnet_1.id
+  route_table_id = aws_route_table.route_to_nat_gateway.id
+}
+resource "aws_route_table_association" "private_to_nat_subnet_2" {
+  subnet_id      = aws_subnet.private_subnet_2.id
+  route_table_id = aws_route_table.route_to_nat_gateway.id
+}
+resource "aws_route_table_association" "private_to_nat_subnet_3" {
+  subnet_id      = aws_subnet.private_subnet_3.id
+  route_table_id = aws_route_table.route_to_nat_gateway.id
 }
 
 

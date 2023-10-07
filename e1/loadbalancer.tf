@@ -4,9 +4,9 @@ resource "aws_lb" "app" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_allow_http.id]
   subnets = [
-    aws_subnet.public_subnet_1.id,
-    aws_subnet.public_subnet_2.id,
-    aws_subnet.public_subnet_3.id
+    aws_subnet.public_subnets[0].id,
+    aws_subnet.public_subnets[1].id,
+    aws_subnet.public_subnets[2].id
   ]
 
   enable_deletion_protection = false

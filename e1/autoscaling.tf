@@ -1,19 +1,3 @@
-
-##### Instance
-# resource "aws_instance" "main" {
-#   ami           = data.aws_ssm_parameter.amazon-linux-ami.value
-#   instance_type = var.instance_type
-
-#   # vpc_security_group_ids = [aws_security_group.instance_allow_http.ids]
-#   vpc_security_group_ids = [aws_security_group.lb_allow_http.id]
-#   subnet_id              = aws_subnet.public_subnet.id
-
-#   tags = {
-#     "Name" = "${var.project_name}-server"
-#   }
-#   user_data = file("scripts/init.sh")
-# }
-
 resource "aws_launch_template" "app" {
   name_prefix   = var.project_name
   image_id      = data.aws_ssm_parameter.amazon-linux-ami.value
@@ -39,9 +23,9 @@ resource "aws_autoscaling_group" "app" {
   min_size         = 1
 
   vpc_zone_identifier = [
-    aws_subnet.private_subnet_1.id,
-    aws_subnet.private_subnet_2.id,
-    aws_subnet.private_subnet_3.id
+    aws_subnet.private_subnets[0].id,
+    aws_subnet.private_subnets[1].id,
+    aws_subnet.private_subnets[2].id
   ]
 
   target_group_arns = [aws_lb_target_group.app.arn]

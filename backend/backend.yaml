@@ -19,10 +19,13 @@ Resources:
   TerraformBackendKMSKey:
     Type: AWS::KMS::Key
     Properties:
+      EnableKeyRotation: true
+      MultiRegion: true
       Tags:
         - Key: Project
           Value: Terraform
       KeyPolicy:
+        Version: 2012-10-17
         Id: Allow current account to access KMS
         Statement:
           - Sid: Enable IAM User Permissions
@@ -31,7 +34,13 @@ Resources:
               AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
             Action: 'kms:*'
             Resource: '*'
-        MultiRegion: true
+  
+  TerraformBackendKMSAlias:
+    Type: AWS::KMS::Alias
+    Properties: 
+      AliasName: alias/terraform-backend
+      TargetKeyId: !Ref TerraformBackendKMSKey
+
   TerraformBackendDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:

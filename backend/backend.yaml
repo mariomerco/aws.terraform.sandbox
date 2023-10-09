@@ -47,6 +47,12 @@ Resources:
       AttributeDefinitions:
         - AttributeName: LockID
           AttributeType: S
+      KeySchema:
+        - AttributeName: LockID
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
       SSESpecification:
         SSEType: KMS
         SSEEnabled: true
@@ -57,7 +63,7 @@ Resources:
 Outputs:
   S3Bucket:
     Description: The Terraform Backend S3 Bucket
-    Value: !Ref TerraformBackendKMSKey
+    Value: !Ref TerraformBackends3Bucket
   DynamoDBTable:
     Description: The Terraform Backend DynamoDB Table for handling locking
     Value: !Ref TerraformBackendDynamoDBTable

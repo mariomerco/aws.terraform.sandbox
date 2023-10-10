@@ -3,9 +3,22 @@ resource "aws_lb" "app" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_allow_http.id]
-  subnets            = [aws_subnet.public_subnet.id]
+  subnets = [
+    aws_subnet.public_subnets[0].id,
+    aws_subnet.public_subnets[1].id,
+    aws_subnet.public_subnets[2].id
+  ]
 
   enable_deletion_protection = false
+}
+
+resource "aws_lb_listener" "http" {
+  load_balancer_arn = aws_lb.app.arn
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.app.arn
+  }
+  port = 80
 }
 
 resource "aws_lb_target_group" "app" {

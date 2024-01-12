@@ -3,7 +3,7 @@ resource "aws_launch_template" "app" {
   image_id      = data.aws_ssm_parameter.amazon-linux-ami.value
   instance_type = var.instance_type
 
-  user_data = filebase64("scripts/init.sh")
+  user_data = filebase64("scripts/user-data.sh")
 
   vpc_security_group_ids = [aws_security_group.instance_allow_http.id]
 

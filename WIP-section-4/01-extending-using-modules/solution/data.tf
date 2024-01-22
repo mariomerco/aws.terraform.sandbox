@@ -1,5 +1,14 @@
-data "aws_ssm_parameter" "amazon-linux-ami" {
-  name = local.amazon_linux_ami_ssm_parameter_key
+data "aws_ami" "this" {
+  most_recent = true
+  owners      = ["amazon"]
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  filter {
+    name   = "name"
+    values = ["al2023-ami-2023*"]
+  }
 }
 
 data "aws_availability_zones" "available" {

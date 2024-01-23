@@ -8,7 +8,7 @@ module "asg" {
   desired_capacity          = 1
   wait_for_capacity_timeout = 0
   health_check_type         = "EC2"
-  vpc_zone_identifier       = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
+  vpc_zone_identifier       = [module.vpc.private_subnets[0], module.vpc.private_subnets[1]]
 
 
   # Launch template

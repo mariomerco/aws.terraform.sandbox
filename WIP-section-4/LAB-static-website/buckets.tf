@@ -1,6 +1,7 @@
 module "s3_bucket" {
   source        = "terraform-aws-modules/s3-bucket/aws"
   attach_policy = true
+  bucket        = "www.${data.aws_route53_zone.hosted_zone.name}"
 
   versioning = {
     enabled = true
@@ -34,18 +35,3 @@ data "aws_iam_policy_document" "bucket_policy" {
     ]
   }
 }
-
-resource "aws_s3_object" "index_html" {
-  bucket       = module.s3_bucket.s3_bucket_id
-  key          = "index.html"
-  source       = "html/index.html"
-  content_type = "text/html"
-}
-
-resource "aws_s3_object" "error_html" {
-  bucket       = module.s3_bucket.s3_bucket_id
-  key          = "error.html"
-  source       = "html/error.html"
-  content_type = "text/html"
-}
-

@@ -5,9 +5,9 @@ module "web_server_virginia" {
   }
 }
 
-# module "web_server_oregon" {
-#   source = "./module"
-#   providers = {
-#     aws = aws.oregon
-#   }
-# }
+module "web_server_oregon" {
+  source = "./module"
+  providers = {
+    aws = aws.oregon
+  }
+}

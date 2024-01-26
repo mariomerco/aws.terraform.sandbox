@@ -10,11 +10,7 @@ resource "aws_instance" "web" {
 
   user_data              = filebase64("${path.module}/scripts/user_data.sh")
   vpc_security_group_ids = [aws_security_group.allow_http.id]
-
-  network_interface {
-    network_interface_id = aws_network_interface.web.id
-    device_index         = 0
-  }
+  subnet_id              = tolist(module.vpc.public_subnets)[0]
 }
 
 

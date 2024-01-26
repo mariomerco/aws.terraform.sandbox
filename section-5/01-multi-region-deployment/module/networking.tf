@@ -15,6 +15,7 @@ module "vpc" {
   public_subnets = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
 
   manage_default_security_group = false
+  map_public_ip_on_launch       = true
 }
 
 resource "aws_security_group" "allow_http" {

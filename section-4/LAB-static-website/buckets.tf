@@ -19,6 +19,28 @@ module "s3_bucket" {
   policy                  = data.aws_iam_policy_document.bucket_policy.json
 }
 
+module "s3_bucket_redirect" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+  # attach_policy = true
+  bucket = data.aws_route53_zone.hosted_zone.name
+
+  versioning = {
+    enabled = true
+  }
+
+  website = {
+    redirect_all_requests_to = {
+      host_name = "https://www.${data.aws_route53_zone.hosted_zone.name}"
+    }
+  }
+  # attach_public_policy = true
+  block_public_policy     = false
+  block_public_acls       = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+  # policy                  = data.aws_iam_policy_document.bucket_policy.json
+}
+
 data "aws_iam_policy_document" "bucket_policy" {
   statement {
     principals {

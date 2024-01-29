@@ -1,3 +1,4 @@
-locals {
-  domain_name = "145272349835.realhandsonlabs.net."
+
+variable "domain_name" {
+  type = string
 }

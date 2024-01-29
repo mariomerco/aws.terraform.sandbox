@@ -1,3 +1,3 @@
 locals {
-  domain_name = "725972464939.realhandsonlabs.net."
+  domain_name = "145272349835.realhandsonlabs.net."
 }

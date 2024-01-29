@@ -9,7 +9,7 @@ module "cdn" {
   origin = {
 
     s3_origin = {
-      domain_name = module.s3_bucket.s3_bucket_website_endpoint
+      domain_name = module.s3_bucket.s3_bucket_bucket_regional_domain_name
     }
   }
 
@@ -45,14 +45,14 @@ module "cdn" {
 }
 
 
-# resource "aws_route53_record" "cdn" {
-#   zone_id = data.aws_route53_zone.hosted_zone.id
-#   name    = local.domain_name
-#   type    = "A"
+resource "aws_route53_record" "cdn" {
+  zone_id = data.aws_route53_zone.hosted_zone.id
+  name    = ""
+  type    = "A"
 
-#   alias {
-#     name                   = local.domain_name
-#     zone_id                = data.aws_route53_zone.hosted_zone.id
-#     evaluate_target_health = false
-#   }
-# }
+  alias {
+    name                   = module.cdn.cloudfront_distribution_domain_name
+    zone_id                = module.cdn.cloudfront_distribution_hosted_zone_id
+    evaluate_target_health = false
+  }
+}

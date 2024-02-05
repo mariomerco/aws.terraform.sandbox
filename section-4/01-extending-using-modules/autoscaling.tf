@@ -12,7 +12,7 @@ module "asg" {
 
 
   # Launch template
-  launch_template_name        = "${var.project_name}-autoscaling-group"
+  launch_template_name        = "${var.project_name}-launch-template"
   launch_template_description = "Launch template for the project '${var.project_name}'"
   update_default_version      = true
 

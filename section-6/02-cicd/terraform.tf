@@ -4,6 +4,13 @@ terraform {
       source = "hashicorp/aws"
     }
   }
+
+  backend "s3" {
+    bucket         = "terraform-backend-terraformbackends3bucket-zdtqeq4tqvvy"
+    key            = "testing"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-backend-TerraformBackendDynamoDBTable-1SOPJGZPR4VKD"
+  }
 }
 
 provider "aws" {

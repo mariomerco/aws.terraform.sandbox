@@ -21,7 +21,7 @@ resource "aws_security_group" "allow_mysql_access" {
   vpc_id = data.aws_vpc.this.id
 
   ingress {
-    description = "HTTP from VPC"
+    description = "Access MySQL"
     from_port   = 3306
     to_port     = 3306
     protocol    = "tcp"
